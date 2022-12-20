@@ -25,12 +25,10 @@ function chControl() {
   if (dataID == 0 || marginRight == "margin-right: 2.20em;") {
     // when show is true that means its showing the chart
     show = 0;
-    console.log(show);
     showHide(show);
     localStorage.setItem("ChartDisplay", "show"); // Saves the condition of Chart's display in LocalStorage so it can remember user's choice while refreshing the page 
   } else {
     show = 1;
-    console.log(show);
     showHide(show);
     localStorage.setItem("ChartDisplay", "hide");
   }
@@ -46,7 +44,6 @@ function showHide(dataID) {
     bothLength = 0;
   }
   if (dataID == 0) {
-    console.log(dataID);
     document.querySelector("#chartcontrol > img").style = "";
     document.querySelector("#chart").style = "display: block";
     document.querySelector("#width").style = "";
@@ -61,12 +58,9 @@ function showHide(dataID) {
       let removeSign = document.querySelector("#budget > div.restante.alert.alert-success > p").textContent.replace('$', '')
       document.querySelector("#budget > div.restante.alert.alert-success > p").innerHTML = removeSign + `<span id="left"></span>`
       let removeSign2 = document.querySelector("#budget > div.alert-primary p").innerText.replace('$', '')
-      console.log(document.querySelector("#budget > div.alert-primary").textContent);
-      console.log(removeSign2);
       document.querySelector("#budget > div.alert-primary p").innerHTML = removeSign2 + `<span id="total"></span>`
     }
   } else {
-    console.log(dataID);
     document.querySelector("#chartcontrol > img").style = "margin-right: 2.20em;";
     document.querySelector("#chart").style = "display: none";
     document.querySelector("#width").style = "max-width: 66% !important";
@@ -79,14 +73,10 @@ class Budget {
   constructor(budget) {
     this.budget = Number(budget);
     this.budgetLeft = Number(this.budget);
-    console.log(budget);
-    console.log(this.budget);
   }
 
   subtractFromBudget(spended) {
-    console.log(spended);
     let newBudget = (this.budgetLeft -= spended);
-    console.log(newBudget);
     return Number(newBudget);
   }
 }
@@ -119,7 +109,6 @@ class HTML {
       expenseName: namesArray,
       expenseAmount: spendedArray,
     };
-    console.log(expenseList);
     localStorage.setItem("Both", JSON.stringify(expenseList));
     expenses.appendChild(li);
   }
@@ -143,7 +132,6 @@ class HTML {
 
   trackBudget(spended) {
     let bLeft = userBudget.subtractFromBudget(spended);
-    console.log(bLeft);
     budgetLeft.innerHTML = `${Number(bLeft).toLocaleString()}`;
   }
 
@@ -182,7 +170,6 @@ reset.addEventListener("click", resetFunction);
 budgetEntry.addEventListener("blur", function () {
   userBudget = budgetEntry.value;
   userBudget = new Budget(userBudget);
-  console.log(userBudget);
   html.insertBudget(userBudget.budget);
   updateBudget();
 });
@@ -197,30 +184,18 @@ budgetEntry.addEventListener("keypress", function (e) {
 });
 
   expenses.addEventListener("click", function (e) {
-    console.log(e.target);
     if (e.target.classList.contains("remove")) {
-      console.log("its contains remove");
-      console.log(e.target.parentElement.querySelector(".badge").textContent);
       let both = localStorage.getItem("Both");
       both = JSON.parse(both);
-      console.log(both.expenseName.length);
-      console.log(both);
       let dataId = e.target.parentElement.getAttribute("data-id");
-      console.log(both.expenseName[dataId]);
-      console.log(e.target.parentElement.querySelector(".badge").textContent);
       if (e.target.parentElement.querySelector(".badge").textContent === both.expenseName[dataId]) {
         let leftBudget = localStorage.getItem("Left");
         let newtBudget = leftBudget - both.expenseAmount[dataId];
-        console.log(both.expenseAmount[dataId]);
-        console.log(newtBudget);
         localStorage.setItem("Left", newtBudget);
         both.expenseName.splice(dataId, 1);
         both.expenseAmount.splice(dataId, 1);
         spendedArray.splice(dataId, 1)
         namesArray.splice(dataId, 1)
-        console.log(spendedArray);
-        console.log(namesArray);
-        console.log(both);
         localStorage.setItem("Both", JSON.stringify(both));
         e.target.parentElement.remove();
         document.querySelectorAll("#expenses > ul > li").forEach((x) => x.remove());
@@ -230,7 +205,6 @@ budgetEntry.addEventListener("keypress", function (e) {
         chart();
       }
     }
-    console.log(expenses);
   });
 
 form.addEventListener("submit", expense);
@@ -241,7 +215,6 @@ function expense(e) {
   userBudget = budgetEntry.value;
   userBudget = new Budget(userBudget);
   curentBudget = userBudget.budget;
-  console.log(curentBudget);
   let spended = amount.value;
   let expenseName = expenseN.value;
   let newBudget = curentBudget - spended;
@@ -253,25 +226,17 @@ function expense(e) {
     let oldCurentBudget = localStorage.getItem("Budget");
     let newCurentBudget = localStorage.getItem("Both");
     newCurentBudget = JSON.parse(newCurentBudget);
-    console.log(newCurentBudget);
-    console.log(newCurentBudget.expenseAmount);
-    console.log(oldCurentBudget);
     for (let i = 0; i < newCurentBudget.expenseAmount.length; i++) {
-      console.log(newCurentBudget.expenseAmount[i]);
       oldCurentBudget -= newCurentBudget.expenseAmount[i];
     }
-    console.log(oldCurentBudget);
     budgetLeft.innerHTML = `${Number(oldCurentBudget).toLocaleString()}`;
 
     localStorage.setItem("Budget", userBudget.budget);
-    console.log(spendedArray);
-    console.log(namesArray);
 
     chart();
     chartD();
   }
 
-  console.log(curentBudget);
 }
 
 
@@ -281,19 +246,14 @@ insertFunction();
 function insertFunction() {
   if (localStorage.getItem("Budget") && localStorage.getItem("Both")) {
     ls = localStorage.getItem("Both");
-    console.log(ls);
-    console.log(JSON.parse(ls));
     ls = JSON.parse(ls);
-    console.log(ls.expenseName);
 
     lsBudget = localStorage.getItem("Budget");
     html.insertBudget(lsBudget);
 
-    console.log(typeof ls);
     let newBud = new Budget(lsBudget);
     for (let i = 0; i < ls.expenseAmount.length; i++) {
       html.insertExpense(ls.expenseAmount[i], ls.expenseName[i]);
-      console.log(ls.expenseAmount[i]);
       let update = newBud.subtractFromBudget(ls.expenseAmount[i]);
       localStorage.setItem("Left", Number(update));
       budgetLeft.innerHTML = `${Number(update).toLocaleString()}`;
@@ -308,7 +268,6 @@ function insertFunctionForW() {
     ls = JSON.parse(ls);
     lsBudget = localStorage.getItem("Budget");
     html.insertBudget(lsBudget);
-    console.log(typeof ls);
     let newBud = new Budget(lsBudget);
     for (let i = 0; i < ls.expenseAmount.length; i++) {
       html.insertExpenseWithOutSave(ls.expenseAmount[i], ls.expenseName[i]);
@@ -330,7 +289,6 @@ function updateBudget() {
 //updates "Budget Left" in html and LocalStorage
 function updateAll() {
   let curentBudget = localStorage.getItem("Budget");
-  console.log(curentBudget);
   if (localStorage.getItem("Both")) {
     let both = localStorage.getItem("Both");
     both = JSON.parse(both);
@@ -339,9 +297,6 @@ function updateAll() {
       allExpenses += Number(both.expenseAmount[i]);
     }
     let finalBudget = curentBudget - allExpenses;
-    console.log(both.expenseAmount[0]);
-    console.log(allExpenses);
-    console.log(finalBudget);
     budgetLeft.innerHTML = Number(finalBudget).toLocaleString();
     localStorage.setItem("Left", finalBudget);
   }
@@ -354,27 +309,20 @@ function chart() {
   ls = localStorage.getItem("Both");
   ls = JSON.parse(ls);
   let newArray = [];
-  console.log(newArray instanceof Array);
   newArray.push(["Expenses", "Expense Amount"]);
   for (let i = 0; i < ls.expenseAmount.length; i++) {
     newArray.push([`${ls.expenseName[i]}`, ls.expenseAmount[i]]);
   }
 
-  console.log(typeof newArray);
-  console.log(newArray);
-  console.log(newArray[0] + " " + newArray[1]);
-  console.log(newArray[0]);
-  console.log(typeof newArray[0]);
 
   let newArraySecond = [];
   newArraySecond.push(newArray);
-  console.log(newArraySecond);
+
 
   function drawChart() {
     for (let i = 0; i < newArraySecond.length; i++) {
       var data = google.visualization.arrayToDataTable(newArraySecond[i]);
 
-      console.log(newArray[i]);
     }
 
     var options = {
