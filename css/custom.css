@@ -163,4 +163,14 @@ form label, h2, .budgetamount, .budget p span, input.form-control, span.amount, 
     .col{
         flex-basis: auto;
     }
+    #chart .content {
+        padding: 0 !important;
+    }
+
+}
+
+@media (min-width:768px) {
+    .lowerwidth{
+        max-width: 66% !important;
+    }
 }

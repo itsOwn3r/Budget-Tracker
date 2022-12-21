@@ -46,7 +46,7 @@ function showHide(dataID) {
   if (dataID == 0) {
     document.querySelector("#chartcontrol > img").style = "";
     document.querySelector("#chart").style = "display: block";
-    document.querySelector("#width").style = "";
+    document.querySelector("#width").classList.remove('lowerwidth')
     document.querySelector("#chartcontrol > img").setAttribute("data-id", 1);
     //checking if there is any Expense entered or not. if bothLength is greater than 0, that means there is/are some Expense entered by user, -->
     // so it will display the chart. if bothLength is 0, the Width of the page will be minimized and chart will be hidden.
@@ -54,7 +54,7 @@ function showHide(dataID) {
       chart();
     } else {
       document.querySelector("#chart").style = "display: none";
-      document.querySelector("#width").style = "@media (max-width:768px) {max-width: 66% !important;}"
+      document.querySelector("#width").classList.add('lowerwidth')
       let removeSign = document.querySelector("#budget > div.restante.alert.alert-success > p").textContent.replace('$', '')
       document.querySelector("#budget > div.restante.alert.alert-success > p").innerHTML = removeSign + `<span id="left"></span>`
       let removeSign2 = document.querySelector("#budget > div.alert-primary p").innerText.replace('$', '')
@@ -63,7 +63,7 @@ function showHide(dataID) {
   } else {
     document.querySelector("#chartcontrol > img").style = "margin-right: 2.20em;";
     document.querySelector("#chart").style = "display: none";
-    document.querySelector("#width").style = "max-width: 66% !important";
+    document.querySelector("#width").classList.add('lowerwidth')
     document.querySelector("#chartcontrol > img").setAttribute("data-id", 0);
   }
 }
@@ -326,20 +326,22 @@ function chart() {
     }
 
     var options = {
-      title: "Chart of Expenses",
-      titleTextStyle: {
-        bold: true,
-        fontSize: 23,
-        alignment: "none",
-      },
+      height: "100%",
+      width: "100%",
       is3D: true,
-      height: 330,
-      width: 500,
+      height: '100%',
+      width: '100%',
       fontSize: 17,
       fontName: "Roboto",
       backgroundColor: {
         fill: "transparent",
       },
+      chartArea: {
+        left: "5%",
+        top: "3%",
+        height: "100%",
+        width: "100%"
+    },
     };
 
     var chart = new google.visualization.PieChart(
