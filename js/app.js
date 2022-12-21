@@ -54,7 +54,7 @@ function showHide(dataID) {
       chart();
     } else {
       document.querySelector("#chart").style = "display: none";
-      document.querySelector("#width").style = "max-width: 66% !important";
+      document.querySelector("#width").style = "@media (max-width:768px) {max-width: 66% !important;}"
       let removeSign = document.querySelector("#budget > div.restante.alert.alert-success > p").textContent.replace('$', '')
       document.querySelector("#budget > div.restante.alert.alert-success > p").innerHTML = removeSign + `<span id="left"></span>`
       let removeSign2 = document.querySelector("#budget > div.alert-primary p").innerText.replace('$', '')

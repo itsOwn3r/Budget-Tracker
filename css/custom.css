@@ -5,6 +5,7 @@ body {
 background: -webkit-linear-gradient(to right, #004e92, #000428);  
 background: linear-gradient(to right, #004e92, #000428); 
 text-align: left;
+overflow-x: hidden;
 font-size: 18px;
 font-family: 'Roboto', sans-serif;
 }
