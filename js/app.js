@@ -1,6 +1,13 @@
 let spendedArray = [];
 let namesArray = [];
 
+//get 'Both' From LocalStorage
+function getBoth(){
+let both = localStorage.getItem("Both");
+both = JSON.parse(both);
+return both;
+}
+
 // check if there is any Expense in LocalStorage, if true changes display of #chart
 chartD();
 function chartD() {
@@ -92,15 +99,15 @@ class HTML {
     document.querySelector("input[name=budget]").value = Number(amountOfBudget);
   }
   insertExpense(spended, expenseName) {
-    let dataId = document.querySelectorAll("#expenses span.badge").length;
+    let dataId = document.querySelectorAll("#expenses .badge").length;
     const expenses = document.querySelector("#expenses ul");
     let li = document.createElement("li");
     li.classList =
       "list-group-item f-flex justify-content-between align-items-center";
     li.setAttribute("data-id", dataId);
     li.innerHTML = `
-    <span class='amount'>$${Number(spended).toLocaleString()}</span>
-    <span class='badge badge-pill badge-primary'>${expenseName}</span>
+    <text-area class='amount' contentEditable='true'>$${Number(spended).toLocaleString()}</text-area>
+    <text-area class='badge badge-pill badge-primary' contentEditable='true'>${expenseName}</text-area>
     <span class='remove'>X</span>
     `;
     spendedArray.push(Number(spended));
@@ -115,15 +122,15 @@ class HTML {
 
   // insert Expenses WithOut Saving to LS, Also using inbound Arrays for 'spended' and 'names'
   insertExpenseWithOutSave(spended, expenseName) {
-    let dataId = document.querySelectorAll("#expenses span.badge").length;
+    let dataId = document.querySelectorAll("#expenses .badge").length;
     const expenses = document.querySelector("#expenses ul");
     let li = document.createElement("li");
     li.classList =
       "list-group-item f-flex justify-content-between align-items-center";
     li.setAttribute("data-id", dataId);
     li.innerHTML = `
-    <span class='amount'>$${Number(spended).toLocaleString()}</span>
-    <span class='badge badge-pill badge-primary'>${expenseName}</span>
+    <text-area class='amount'>$${Number(spended).toLocaleString()}</text-area>
+    <text-area class='badge badge-pill badge-primary'>${expenseName}</text-area>
     <span class='remove'>X</span>
     `;
     
@@ -166,6 +173,31 @@ const html = new HTML();
 // Eventlisteners
 chartControl.addEventListener("click", chControl);
 reset.addEventListener("click", resetFunction);
+editListener()
+function editListener(){
+setTimeout(() => {
+  let lis = document.querySelectorAll("li text-area")
+  lis.forEach(x => x.addEventListener('blur', liveEdit));
+
+}, 1000);
+}
+  function liveEdit(e){
+    let dataId = e.target.parentElement.getAttribute('data-id');
+    let edited = e.target.textContent;
+    let both = getBoth()
+    if (e.target.classList.contains('amount')) {
+      edited = edited.replace('$','')
+      edited = Number(edited)
+      both.expenseAmount.splice(dataId, 1 , edited);
+      localStorage.setItem("Both", JSON.stringify(both));
+      updateAll();
+    }
+    else{
+    both.expenseName.splice(dataId, 1 , edited);
+    localStorage.setItem("Both", JSON.stringify(both));
+    }
+  }
+
 
 budgetEntry.addEventListener("blur", function () {
   userBudget = budgetEntry.value;
@@ -185,8 +217,7 @@ budgetEntry.addEventListener("keypress", function (e) {
 
   expenses.addEventListener("click", function (e) {
     if (e.target.classList.contains("remove")) {
-      let both = localStorage.getItem("Both");
-      both = JSON.parse(both);
+      let both = getBoth()
       let dataId = e.target.parentElement.getAttribute("data-id");
       if (e.target.parentElement.querySelector(".badge").textContent === both.expenseName[dataId]) {
         let leftBudget = localStorage.getItem("Left");
@@ -235,6 +266,7 @@ function expense(e) {
 
     chart();
     chartD();
+    editListener();
   }
 
 }
@@ -290,8 +322,7 @@ function updateBudget() {
 function updateAll() {
   let curentBudget = localStorage.getItem("Budget");
   if (localStorage.getItem("Both")) {
-    let both = localStorage.getItem("Both");
-    both = JSON.parse(both);
+    let both = getBoth()
     let allExpenses = 0;
     for (let i = 0; i < both.expenseAmount.length; i++) {
       allExpenses += Number(both.expenseAmount[i]);
@@ -326,8 +357,6 @@ function chart() {
     }
 
     var options = {
-      height: "100%",
-      width: "100%",
       is3D: true,
       height: '100%',
       width: '100%',

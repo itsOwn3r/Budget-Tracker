@@ -60,7 +60,7 @@ h2 {
 li.list-group-item {
     text-align: left;
 }
-span.badge {
+.badge {
     float: left;
 }
 
@@ -80,13 +80,13 @@ svg > g:nth-child(1) > rect {
 #piechart_3d > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(2) > g >{
     color: red;
 }
-span.amount {
-    left: 0;
-    right: 0;
+.amount {
+    right: 10px;
     position: absolute;
     padding: 5px 0 10px 0px;
     font-size: 20px;
     bottom: 0;
+    color: green;
 }
 
 li.list-group-item {
@@ -98,8 +98,10 @@ li.list-group-item {
     width: 20px;
     float: right;
     cursor: pointer;
-    position: relative;
     z-index: 2;
+    position: absolute;
+    right: -20px;
+    color: red;
 }
 
 #chart .content h2 {
@@ -155,7 +157,7 @@ path.first-path {
     float: right;
 }
 
-form label, h2, .budgetamount, .budget p span, input.form-control, span.amount, .remove, .badge, #add-expense button {
+form label, h2, .budgetamount, .budget p span, input.form-control, .amount, .remove, .badge, #add-expense button {
     font-weight: 500;
 }
 
