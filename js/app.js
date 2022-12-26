@@ -192,6 +192,7 @@ setTimeout(() => {
       both.expenseAmount.splice(dataId, 1 , edited);
       localStorage.setItem("Both", JSON.stringify(both));
       updateAll();
+      chart();
     }
     else{
     both.expenseName.splice(dataId, 1 , edited);
