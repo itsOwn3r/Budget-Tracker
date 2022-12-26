@@ -129,8 +129,8 @@ class HTML {
       "list-group-item f-flex justify-content-between align-items-center";
     li.setAttribute("data-id", dataId);
     li.innerHTML = `
-    <text-area class='amount'>$${Number(spended).toLocaleString()}</text-area>
-    <text-area class='badge badge-pill badge-primary'>${expenseName}</text-area>
+    <text-area class='amount' contentEditable='true'>$${Number(spended).toLocaleString()}</text-area>
+    <text-area class='badge badge-pill badge-primary' contentEditable='true'>${expenseName}</text-area>
     <span class='remove'>X</span>
     `;
     
@@ -187,6 +187,7 @@ setTimeout(() => {
     let both = getBoth()
     if (e.target.classList.contains('amount')) {
       edited = edited.replace('$','')
+      edited = edited.replace(',','')
       edited = Number(edited)
       both.expenseAmount.splice(dataId, 1 , edited);
       localStorage.setItem("Both", JSON.stringify(both));
