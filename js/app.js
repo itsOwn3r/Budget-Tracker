@@ -138,7 +138,8 @@ class HTML {
   }
 
   trackBudget(spended) {
-    let bLeft = userBudget.subtractFromBudget(spended);
+    let enteredValue = budgetEntry.value;
+    let bLeft = new Budget(enteredValue).subtractFromBudget(spended);
     budgetLeft.innerHTML = `${Number(bLeft).toLocaleString()}`;
   }
 
@@ -202,16 +203,16 @@ setTimeout(() => {
 
 
 budgetEntry.addEventListener("blur", function () {
-  userBudget = budgetEntry.value;
-  userBudget = new Budget(userBudget);
+  let enteredValue = budgetEntry.value;
+  userBudget = new Budget(enteredValue);
   html.insertBudget(userBudget.budget);
   updateBudget();
 });
 
 budgetEntry.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
-    userBudget = budgetEntry.value;
-    userBudget = new Budget(userBudget);
+    let enteredValue = budgetEntry.value;
+    userBudget = new Budget(enteredValue);
     html.insertBudget(userBudget.budget);
     updateBudget();
   }
@@ -245,12 +246,11 @@ form.addEventListener("submit", expense);
 // add new Expense function
 function expense(e) {
   e.preventDefault();
-  userBudget = budgetEntry.value;
-  userBudget = new Budget(userBudget);
+  let enteredValue = budgetEntry.value;
+  userBudget = new Budget(enteredValue);
   curentBudget = userBudget.budget;
   let spended = amount.value;
   let expenseName = expenseN.value;
-  let newBudget = curentBudget - spended;
   if (spended == "" || spended == 0) {
     html.printMessage("Error! Please insert data correctly", "alert-danger");
   } else {
@@ -282,7 +282,7 @@ function insertFunction() {
     ls = localStorage.getItem("Both");
     ls = JSON.parse(ls);
 
-    lsBudget = localStorage.getItem("Budget");
+    let lsBudget = localStorage.getItem("Budget");
     html.insertBudget(lsBudget);
 
     let newBud = new Budget(lsBudget);
